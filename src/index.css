@@ -11,3 +11,153 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.title {
+  text-align: center;
+  font-family: 'impact', 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 6vh;
+  left: 0;
+  right: 0;
+}
+
+.game-info {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  height: 25vh;
+  width: 25vh;
+  margin-left: 3vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  padding: 1vh;
+  font-size: 2vh;
+  border-radius: 5px; /* 5px rounded corners */
+}
+
+.game-car {
+  margin-left: 10vh;
+  margin-right: 10vh;
+  height: auto;
+}
+
+.header {
+  font-family: 'impact', 'Inter';
+  font-style: normal;
+  font-weight: 10;
+  font-size: 3vh;
+}
+
+.car-item {
+  text-align: center;
+}
+
+.empty-info {
+  height: 25vh;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3vh;
+}
+
+.team-info {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 1.6vh;
+}
+
+.team-logo {
+  width: 6vh;
+  height: 6vh;
+}
+
+.tie-logo {
+  width: 5vh;
+  height: 6vh;
+}
+
+.outcome-info-three {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 33%;
+  max-width: 33%;
+}
+
+.outcome-info-two {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 48%;
+  min-width: 48%;
+}
+
+.detail-button {
+  display: inline-block;
+  outline: 0;
+  position: fixed;
+  bottom: 3vh;
+  left: 13vh;
+  border: 0;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 1vh;
+  font-size: 1.5vh;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 200ms, background 200ms;
+  background: transparent;
+  color: #000000;
+  box-shadow: 0 0 0 3px #000000 inset;
+}
+
+.modal {
+  font-size: 2.5vh;
+}
+.modal > .header {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  font-size: 2.5vh;
+  text-align: center;
+  padding: 5px;
+}
+.modal > .content {
+  width: 100%;
+  text-align: center;
+  font-size: 2vh;
+  padding: 1%;
+}
+.modal > .actions {
+  width: 100%;
+  padding: 10px 5px;
+  margin: auto;
+  text-align: center;
+}
+.modal > .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  margin: auto;
+  background: rgb(255, 255, 255);
+  width: 40%;
+  padding: 5px;
+  border-radius: 5px;
+}
