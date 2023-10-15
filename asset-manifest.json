@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/arbFinderWeb/static/css/main.60e3ac5c.css",
-    "main.js": "/arbFinderWeb/static/js/main.ff753364.js",
+    "main.js": "/arbFinderWeb/static/js/main.744fe087.js",
     "static/media/revicons.eot": "/arbFinderWeb/static/media/revicons.a77de540a38981833f9e.eot",
     "static/media/revicons.ttf": "/arbFinderWeb/static/media/revicons.57fd05d4ae650374c8de.ttf",
     "static/media/revicons.woff": "/arbFinderWeb/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/arbFinderWeb/index.html",
     "main.60e3ac5c.css.map": "/arbFinderWeb/static/css/main.60e3ac5c.css.map",
-    "main.ff753364.js.map": "/arbFinderWeb/static/js/main.ff753364.js.map"
+    "main.744fe087.js.map": "/arbFinderWeb/static/js/main.744fe087.js.map"
   },
   "entrypoints": [
     "static/css/main.60e3ac5c.css",
-    "static/js/main.ff753364.js"
+    "static/js/main.744fe087.js"
   ]
 }
