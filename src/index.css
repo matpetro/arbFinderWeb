@@ -96,7 +96,7 @@ code {
 }
 
 .detail-button {
-  position: fixed;
+  position: absolute;
   bottom: 3vh;
   left: 13vh;
   border: 0;
