@@ -2,17 +2,26 @@ import GameCarousel from "./components/GameCarousel";
 import React from "react";
 
 function App() {
-  const [eplInfo, setEplInfo] = React.useState([{'sport':"epl",'time': "2023-10-24T00:15:00Z", 'arbInfo': {}, 'away': "Fulham", 'home': 
+/*   const [eplInfo, setEplInfo] = React.useState([{'sport':"epl",'time': "2023-10-24T00:15:00Z", 'arbInfo': {}, 'away': "Fulham", 'home': 
   "Brighton and Hove Albion", 'outcomes': {'awayWinBooky': "TwinSpires", 'homeWinBooky': "Caesars", 'maxAwayWinOdds': 6.25, 'maxHomeWinOdds': 
   1.51, 'tieBooky': "Bovada", 'maxTieOdds': 4.8}}]);
   const [nflInfo, setNflInfo] = React.useState([{'sport':"nfl", 'time': "2023-10-24T00:15:00Z", 'arbInfo': {'totalBet': 1000, 'unbiasBetHome': 500, 'unbiasBetAway': 500, 'unbiasEarnings': 33, 'biasHomeBet': {'biasedBetAmt': 700, 'otherBetAmt': 300},
           'biasAwayBet': {'biasedBetAmt': 900, 'otherBetAmt': 500}}, 'away': "San Francisco 49ers", 'home': 
-  "Minnesota Vikings", 'outcomes': {'awayWinBooky': "FanDuel", 'homeWinBooky': "BetRivers", 'maxAwayWinOdds': 3.95, 'maxHomeWinOdds': 1.28}}]);
+  "Minnesota Vikings", 'outcomes': {'awayWinBooky': "FanDuel", 'homeWinBooky': "BetRivers", 'maxAwayWinOdds': 3.95, 'maxHomeWinOdds': 1.28}},
+  {'sport':"nfl", 'time': "2023-10-24T00:15:00Z", 'arbInfo': {'totalBet': 1000, 'unbiasBetHome': 500, 'unbiasBetAway': 500, 'unbiasEarnings': 33, 'biasHomeBet': {'biasedBetAmt': 700, 'otherBetAmt': 300},
+  'biasAwayBet': {'biasedBetAmt': 900, 'otherBetAmt': 500}}, 'away': "San Francisco 49ers", 'home': 
+"Minnesota Vikings", 'outcomes': {'awayWinBooky': "FanDuel", 'homeWinBooky': "BetRivers", 'maxAwayWinOdds': 3.95, 'maxHomeWinOdds': 1.28}}]);
   const [nhlInfo, setNhlInfo] = React.useState([]);
   const [nbaInfo, setNbaInfo] = React.useState([]);
   const [arbInfo, setArbInfo] = React.useState([{'sport':"nfl", 'time': "2023-10-24T00:15:00Z", 'arbInfo': {'totalBet': 1000, 'unbiasBetHome': 500, 'unbiasBetAway': 500, 'unbiasEarnings': 33, 'biasHomeBet': {'biasedBetAmt': 700, 'otherBetAmt': 300},
   'biasAwayBet': {'biasedBetAmt': 900, 'otherBetAmt': 500}}, 'away': "San Francisco 49ers", 'home': 
-"Minnesota Vikings", 'outcomes': {'awayWinBooky': "FanDuel", 'homeWinBooky': "BetRivers", 'maxAwayWinOdds': 3.95, 'maxHomeWinOdds': 1.28}}]);
+"Minnesota Vikings", 'outcomes': {'awayWinBooky': "FanDuel", 'homeWinBooky': "BetRivers", 'maxAwayWinOdds': 3.95, 'maxHomeWinOdds': 1.28}}]); */
+
+  const [eplInfo, setEplInfo] = React.useState([]);
+  const [nflInfo, setNflInfo] = React.useState([]);
+  const [nhlInfo, setNhlInfo] = React.useState([]);
+  const [nbaInfo, setNbaInfo] = React.useState([]);
+  const [arbInfo, setArbInfo] = React.useState([]);
 
   // Use effect once on load up to get a list of the game objects that we need
   React.useEffect(() => {
