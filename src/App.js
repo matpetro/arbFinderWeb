@@ -21,6 +21,7 @@ function App() {
   const [nflInfo, setNflInfo] = React.useState([]);
   const [nhlInfo, setNhlInfo] = React.useState([]);
   const [nbaInfo, setNbaInfo] = React.useState([]);
+  const [mlbInfo, setMlbInfo] = React.useState([]);
   const [arbInfo, setArbInfo] = React.useState([]);
 
   // Use effect once on load up to get a list of the game objects that we need
@@ -51,9 +52,15 @@ function App() {
             headers: {
                 'X-RapidAPI-Key': '76fe66a335msh8b2d9ac803072f2p1cad14jsn3b295dcdecb6',
                 'X-RapidAPI-Host': 'odds.p.rapidapi.com'
+          }}),
+          fetch('https://odds.p.rapidapi.com/v4/sports/baseball_mlb/odds?regions=us&oddsFormat=decimal&markets=h2h&dateFormat=iso', {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': '76fe66a335msh8b2d9ac803072f2p1cad14jsn3b295dcdecb6',
+                'X-RapidAPI-Host': 'odds.p.rapidapi.com'
           }})
         ]);
-        const [epl, nfl, nhl, nba] = await Promise.all(responsesJSON.map(r => r.json()));
+        const [epl, nfl, nhl, nba, mlb] = await Promise.all(responsesJSON.map(r => r.json()));
         let arbs = [];
         let finalEpl = checkThreeOutcomeOdds(epl, "epl")
         finalEpl.forEach(game =>  {
@@ -79,15 +86,22 @@ function App() {
             arbs.push(game);
           }
         });
-        console.log(finalEpl, 'epl');
-        console.log(finalNfl, 'nfl');
-        console.log(finalNhl, 'nfl');
-        console.log(finalNba, 'nba');
-        console.log(arbs, 'arbs');
+        let finalMlb = checkTwoOutcomeOdds(mlb, "mlb")
+        finalMlb.forEach(game =>  {
+          if (checkTwoOutcomeArb(game)){
+            arbs.push(game);
+          }
+        });
+        // console.log(finalEpl, 'epl');
+        // console.log(finalNfl, 'nfl');
+        // console.log(finalNhl, 'nfl');
+        // console.log(finalNba, 'nba');
+        // console.log(arbs, 'arbs');
         setEplInfo(finalEpl);
         setNflInfo(finalNfl);
         setNhlInfo(finalNhl);
         setNbaInfo(finalNba);
+        setMlbInfo(finalMlb);
         setArbInfo(arbs);
         
       } catch (err) {
@@ -104,15 +118,16 @@ function App() {
       <GameCarousel header="ARB OPPORTUNITIES" info={arbInfo} emptyMessage="There Are Currently No Arb Opportunities"/>
       <GameCarousel header="NFL BEST ODDS" info={nflInfo} emptyMessage="No NFL Info Could Be Found"/>
       <GameCarousel header="NHL BEST ODDS" info={nhlInfo} emptyMessage="No NHL Info Could Be Found"/>
-      <GameCarousel header="NBA BEST ODDS" info={nbaInfo} emptyMessage="No NFL Info Could Be Found"/>
       <GameCarousel header="EPL BEST ODDS" info={eplInfo} emptyMessage="No EPL Info Could Be Found"/>
+      <GameCarousel header="MLB BEST ODDS" info={mlbInfo} emptyMessage="No MLB Info Could Be Found"/>
+      <GameCarousel header="NBA BEST ODDS" info={nbaInfo} emptyMessage="No NBA Info Could Be Found"/>
     </div>
   );
 }
 
 function checkThreeOutcomeOdds(matchDetails, sport){
     let gameSummaries = [];
-    console.log(`Why error ${matchDetails}, ${sport}`);
+    //console.log(`Why error ${matchDetails}, ${sport}`);
     matchDetails.forEach(game => {
         let bookmakers = game['bookmakers'];
         if (bookmakers.length){
@@ -139,7 +154,7 @@ function checkThreeOutcomeArb(gameSummary){
   // Now do the arbitrage calc
   let oddsMargin = 1/gameSummary['outcomes']['maxTieOdds'] + 1/gameSummary['outcomes']['maxAwayWinOdds'] + 1/gameSummary['outcomes']['maxHomeWinOdds'];
 
-  console.log(`Odds Margin for ${gameSummary['away']} vs ${gameSummary['home']} : ${oddsMargin}`);
+  //console.log(`Odds Margin for ${gameSummary['away']} vs ${gameSummary['home']} : ${oddsMargin}`);
 
   if (oddsMargin < 1) {
       console.log("ARBITRAGE OPPURTUNITY DETECTED");
@@ -197,7 +212,7 @@ function checkTwoOutcomeArb(gameSummary){
   // Now do the arbitrage calc
   let oddsMargin = 1/gameSummary['outcomes']['maxAwayWinOdds'] + 1/gameSummary['outcomes']['maxHomeWinOdds'];
 
-  console.log(`Odds Margin for ${gameSummary['away']} vs ${gameSummary['home']} : ${oddsMargin}`);
+  //console.log(`Odds Margin for ${gameSummary['away']} vs ${gameSummary['home']} : ${oddsMargin}`);
 
   if (oddsMargin < 1) {
       console.log("ARBITRAGE OPPURTUNITY DETECTED");
