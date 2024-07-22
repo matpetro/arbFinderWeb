@@ -1,4 +1,5 @@
 import GameCarousel from "./components/GameCarousel";
+import { ColorRing } from "react-loader-spinner";
 import React from "react";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
   const [nbaInfo, setNbaInfo] = React.useState([]);
   const [mlbInfo, setMlbInfo] = React.useState([]);
   const [arbInfo, setArbInfo] = React.useState([]);
+  const [loading, setLoading] = React.useState(true)
 
   // Use effect once on load up to get a list of the game objects that we need
   React.useEffect(() => {
@@ -103,7 +105,7 @@ function App() {
         setNbaInfo(finalNba);
         setMlbInfo(finalMlb);
         setArbInfo(arbs);
-        
+        setLoading(false);
       } catch (err) {
         throw err;
       }
@@ -115,12 +117,15 @@ function App() {
   return (
     <div className="App">
       <div className="title">ARB FINDER</div>
-      <GameCarousel header="ARB OPPORTUNITIES" info={arbInfo} emptyMessage="There Are Currently No Arb Opportunities"/>
-      <GameCarousel header="NFL BEST ODDS" info={nflInfo} emptyMessage="No NFL Info Could Be Found"/>
-      <GameCarousel header="NHL BEST ODDS" info={nhlInfo} emptyMessage="No NHL Info Could Be Found"/>
-      <GameCarousel header="EPL BEST ODDS" info={eplInfo} emptyMessage="No EPL Info Could Be Found"/>
-      <GameCarousel header="MLB BEST ODDS" info={mlbInfo} emptyMessage="No MLB Info Could Be Found"/>
-      <GameCarousel header="NBA BEST ODDS" info={nbaInfo} emptyMessage="No NBA Info Could Be Found"/>
+      {loading ? <div  style={{display: "flex", justifyContent: "center", alignItems: "flex-start", height: "50vh", marginTop:"100px"}}> <ColorRing colors={['#888888', '#888888', '#888888', '#888888', '#888888']}  /> </div> : <>
+        <GameCarousel header="ARB OPPORTUNITIES" info={arbInfo} emptyMessage="There Are Currently No Arb Opportunities"/>
+        <GameCarousel header="NFL BEST ODDS" info={nflInfo} emptyMessage="No NFL Info Could Be Found"/>
+        <GameCarousel header="NHL BEST ODDS" info={nhlInfo} emptyMessage="No NHL Info Could Be Found"/>
+        <GameCarousel header="EPL BEST ODDS" info={eplInfo} emptyMessage="No EPL Info Could Be Found"/>
+        <GameCarousel header="MLB BEST ODDS" info={mlbInfo} emptyMessage="No MLB Info Could Be Found"/>
+        <GameCarousel header="NBA BEST ODDS" info={nbaInfo} emptyMessage="No NBA Info Could Be Found"/>
+      </>}
+      
     </div>
   );
 }
@@ -131,13 +136,15 @@ function checkThreeOutcomeOdds(matchDetails, sport){
     matchDetails.forEach(game => {
         let bookmakers = game['bookmakers'];
         if (bookmakers.length){
-            let maxTieOdds = bookmakers.reduce((max, game) => max['markets'][0]['outcomes'][2]['price'] > game['markets'][0]['outcomes'][2]['price'] ? max : game);
-            let maxAwayWinOdds = bookmakers.reduce((max, game) => max['markets'][0]['outcomes'][0]['price'] > game['markets'][0]['outcomes'][0]['price'] ? max : game);
-            let maxHomeWinOdds = bookmakers.reduce((max, game) => max['markets'][0]['outcomes'][1]['price'] > game['markets'][0]['outcomes'][1]['price'] ? max : game);
+            let homeTeam = game['home_team'];
+            let awayTeam = game['away_team'];
+            let maxTieOdds = bookmakers.reduce((max, game) => (max['markets'][0]['outcomes'].find(obj => obj.name === 'Draw')?.price ?? 0) > (game['markets'][0]['outcomes'].find(obj => obj.name === 'Draw')?.price ?? 0) ? max : game);
+            let maxAwayWinOdds = bookmakers.reduce((max, game) => (max['markets'][0]['outcomes'].find(obj => obj.name === awayTeam)?.price ?? 0) > (game['markets'][0]['outcomes'].find(obj => obj.name === awayTeam)?.price ?? 0) ? max : game);
+            let maxHomeWinOdds = bookmakers.reduce((max, game) => (max['markets'][0]['outcomes'].find(obj => obj.name === homeTeam)?.price ?? 0) > (game['markets'][0]['outcomes'].find(obj => obj.name === homeTeam)?.price ?? 0) ? max : game);
 
-            let gameSummary = {'sport': sport, 'away' : game['away_team'], 'home': game['home_team'], 'time': game['commence_time'], 'arbInfo': {}, 'outcomes': {'maxHomeWinOdds' : maxHomeWinOdds['markets'][0]['outcomes'][1]['price'],
-                'homeWinBooky': maxHomeWinOdds['title'], 'maxAwayWinOdds' : maxAwayWinOdds['markets'][0]['outcomes'][0]['price'], 'awayWinBooky' : maxAwayWinOdds['title'], 
-                'tieBooky' : maxTieOdds['title'], 'maxTieOdds' : maxTieOdds['markets'][0]['outcomes'][2]['price']
+            let gameSummary = {'sport': sport, 'away' : awayTeam, 'home': homeTeam, 'time': game['commence_time'], 'arbInfo': {}, 'outcomes': {'maxHomeWinOdds' : maxHomeWinOdds['markets'][0]['outcomes'].find(obj => obj.name === homeTeam)['price'],
+                'homeWinBooky': maxHomeWinOdds['title'], 'maxAwayWinOdds' : maxAwayWinOdds['markets'][0]['outcomes'].find(obj => obj.name === awayTeam)['price'], 'awayWinBooky' : maxAwayWinOdds['title'], 
+                'tieBooky' : maxTieOdds['title'], 'maxTieOdds' : maxTieOdds['markets'][0]['outcomes'].find(obj => obj.name === 'Draw')['price']
             }};
 
             gameSummaries.push(gameSummary);
@@ -187,15 +194,17 @@ function checkThreeOutcomeArb(gameSummary){
 
 function checkTwoOutcomeOdds(matchDetails, sport){
   let gameSummaries = [];
-  console.log(`Why error ${matchDetails}, ${sport}`);
+  //console.log(`Why error ${matchDetails}, ${sport}`);
   matchDetails.forEach(game => {
+      let homeTeam = game['home_team'];
+      let awayTeam = game['away_team'];
       let bookmakers = game['bookmakers'];
       if (bookmakers.length){
-          let maxAwayWinOdds = bookmakers.reduce((max, game) => max['markets'][0]['outcomes'][0]['price'] > game['markets'][0]['outcomes'][0]['price'] ? max : game);
-          let maxHomeWinOdds = bookmakers.reduce((max, game) => max['markets'][0]['outcomes'][1]['price'] > game['markets'][0]['outcomes'][1]['price'] ? max : game);
+          let maxAwayWinOdds = bookmakers.reduce((max, game) => max['markets'][0]['outcomes'].find(obj => obj.name === awayTeam)?.price ?? 0 > game['markets'][0]['outcomes'].find(obj => obj.name === awayTeam)?.price ?? 0 ? max : game);
+          let maxHomeWinOdds = bookmakers.reduce((max, game) => max['markets'][0]['outcomes'].find(obj => obj.name === homeTeam)?.price ?? 0 > game['markets'][0]['outcomes'].find(obj => obj.name === homeTeam)?.price ?? 0 ? max : game);
 
-          let gameSummary = {'sport': sport, 'away' : game['away_team'], 'home': game['home_team'], 'time': game['commence_time'], 'arbInfo': {}, 'outcomes': {'maxHomeWinOdds' : maxHomeWinOdds['markets'][0]['outcomes'][1]['price'],
-              'homeWinBooky': maxHomeWinOdds['title'], 'maxAwayWinOdds' : maxAwayWinOdds['markets'][0]['outcomes'][0]['price'], 'awayWinBooky' : maxAwayWinOdds['title']
+          let gameSummary = {'sport': sport, 'away' : awayTeam, 'home': homeTeam, 'time': game['commence_time'], 'arbInfo': {}, 'outcomes': {'maxHomeWinOdds' : maxHomeWinOdds['markets'][0]['outcomes'].find(obj => obj.name === homeTeam)['price'],
+              'homeWinBooky': maxHomeWinOdds['title'], 'maxAwayWinOdds' : maxAwayWinOdds['markets'][0]['outcomes'].find(obj => obj.name === awayTeam)['price'], 'awayWinBooky' : maxAwayWinOdds['title']
           }};
 
           gameSummaries.push(gameSummary);
@@ -256,6 +265,5 @@ export default App;
 
 
 /* TODO:
-- loading animation
 - could add biased bet info too
 */
